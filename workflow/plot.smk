@@ -10,6 +10,8 @@ SAMPLES = ['sma_neg_trs', 'public_neg_trs_1', 'public_neg_trs_2', 'public_neg_tr
 
 # ANTSMODES = ['antspy_rigid', 'antspy_affine', 'antspy_elastic', 'antspy_syn']
 ANTSMODES = ['antspy_rigid', 'antspy_affine']
+# SITKMODES = ['sitk_rigid', 'sitk_affine', 'sitk_bspline']
+SITKMODES = ['sitk_rigid']
 
 rule all:
     input:
@@ -28,7 +30,15 @@ rule all:
         expand('plot/{sample}/{antsmode}/warped.png',
             sample=SAMPLES, antsmode=ANTSMODES),
         expand('plot/{sample}/{antsmode}/warped_overlay.png',
-            sample=SAMPLES, antsmode=ANTSMODES)
+            sample=SAMPLES, antsmode=ANTSMODES),
+        expand('plot/{sample}/{sitkmode}/fixed.png',
+            sample=SAMPLES, sitkmode=SITKMODES),
+        expand('plot/{sample}/{sitkmode}/moving.png',
+            sample=SAMPLES, sitkmode=SITKMODES),
+        expand('plot/{sample}/{sitkmode}/warped.png',
+            sample=SAMPLES, sitkmode=SITKMODES),
+        expand('plot/{sample}/{sitkmode}/warped_overlay.png',
+            sample=SAMPLES, sitkmode=SITKMODES)
 
 rule plot_datasets:
     input:
@@ -84,6 +94,8 @@ rule plot_antspy:
         'plot/{sample}/{antsmode}/moving.png',
         'plot/{sample}/{antsmode}/warped.png',
         'plot/{sample}/{antsmode}/warped_overlay.png'
+    wildcard_constraints:
+        antsmode='|'.join([re.escape(x) for x in ANTSMODES])
     container:
         'docker://koki/ir-experiments:20240911'
     resources:
@@ -94,3 +106,26 @@ rule plot_antspy:
         'logs/plot_{sample}_{antsmode}.log'
     shell:
         'src/plot_antspy.sh {input} {output} >& {log}'
+
+rule plot_sitk:
+    input:
+        'data/{sample}/source/exp_res_fix.nii',
+        'data/{sample}/target/exp_res_fix.nii',
+        'output/{sitkmode}/{sample}/warped.csv'
+    output:
+        'plot/{sample}/{sitkmode}/fixed.png',
+        'plot/{sample}/{sitkmode}/moving.png',
+        'plot/{sample}/{sitkmode}/warped.png',
+        'plot/{sample}/{sitkmode}/warped_overlay.png'
+    wildcard_constraints:
+        sitkmode='|'.join([re.escape(x) for x in SITKMODES])
+    container:
+        'docker://koki/ir-experiments:20240911'
+    resources:
+        mem_mb=500000
+    benchmark:
+        'benchmarks/plot_{sample}_{sitkmode}.txt'
+    log:
+        'logs/plot_{sample}_{sitkmode}.log'
+    shell:
+        'src/plot_sitk.sh {input} {output} >& {log}'

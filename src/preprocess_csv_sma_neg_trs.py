@@ -25,6 +25,9 @@ target_celltype = pd.read_csv("data/data_v2/public_lipid(sma)/D1/msi_trs_negD1_c
 source_celltype = source_all_exp.iloc[1:, 0:6]
 source_all_exp = source_all_exp.drop(['Astrocytes', 'Microglia', 'Neurons', 'Oligodendrocytes', 'Name'], axis=1).loc[1:,]
 
+# Only Source
+source_all_exp['Y'] = max(source_all_exp['Y']) - source_all_exp['Y']
+
 # Sorting
 source_all_exp = source_all_exp.sort_values(by=['X', 'Y'])
 target_all_exp = target_all_exp.sort_values(by=['X', 'Y'])

@@ -32,15 +32,15 @@ outfile9 = args[18]
 outfile10 = args[19]
 outfile11 = args[20]
 outfile12 = args[21]
-# infile1 = 'data/sma_neg_trs/source/exp.csv'
-# infile2 = 'data/sma_neg_trs/target/exp.csv'
-# infile3 = 'data/sma_neg_trs/source/all_exp.csv'
-# infile4 = 'data/sma_neg_trs/source/celltype.csv'
-# infile5 = 'data/sma_neg_trs/target/celltype.csv'
-# infile6 = 'data/sma_neg_trs/source/x.csv'
-# infile7 = 'data/sma_neg_trs/target/x.csv'
-# infile8 = 'data/sma_neg_trs/source/y.csv'
-# infile9 = 'data/sma_neg_trs/target/y.csv'
+# infile1 = 'data/public_neg_trs_1/source/exp.csv'
+# infile2 = 'data/public_neg_trs_1/target/exp.csv'
+# infile3 = 'data/public_neg_trs_1/source/all_exp.csv'
+# infile4 = 'data/public_neg_trs_1/source/celltype.csv'
+# infile5 = 'data/public_neg_trs_1/target/celltype.csv'
+# infile6 = 'data/public_neg_trs_1/source/x.csv'
+# infile7 = 'data/public_neg_trs_1/target/x.csv'
+# infile8 = 'data/public_neg_trs_1/source/y.csv'
+# infile9 = 'data/public_neg_trs_1/target/y.csv'
 
 # Loading
 source_exp = pd.read_csv(infile1, header=0)
@@ -78,16 +78,16 @@ target_celltype_img = [sitk.GetImageFromArray(x.T) for x in target_celltype_img_
 
 # source_img = resample_image(source_img, source_res)
 # target_img = resample_image(target_img, target_res)
-source_img = utils.resize(source_img, (150, 170), sitk.sitkGaussian)
-target_img = utils.resize(target_img, (150, 170), sitk.sitkGaussian)
+source_img = utils.resize(source_img, (1000, 1000), sitk.sitkGaussian)
+target_img = utils.resize(target_img, (1000, 1000), sitk.sitkGaussian)
 
 # source_all_img = [resample_image(x, scale=source_res) for x in source_all_img]
-source_all_img = [utils.resize(x, (150, 170)) for x in source_all_img]
+source_all_img = [utils.resize(x, (1000, 1000)) for x in source_all_img]
 
 # source_celltype_img = [resample_image_categorical(x, scale=source_res) for x in source_celltype_img]
 # target_celltype_img = [resample_image_categorical(x, scale=target_res) for x in target_celltype_img]
-source_celltype_img = [utils.resize(x, (150, 170)) for x in source_celltype_img]
-target_celltype_img = [utils.resize(x, (150, 170)) for x in target_celltype_img]
+source_celltype_img = [utils.resize(x, (1000, 1000)) for x in source_celltype_img]
+target_celltype_img = [utils.resize(x, (1000, 1000)) for x in target_celltype_img]
 
 # ITK Image Object => Numpy Array
 source_img_array = sitk.GetArrayFromImage(source_img).T

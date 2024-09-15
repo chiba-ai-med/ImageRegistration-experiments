@@ -30,6 +30,9 @@ cols = list(target_all_exp.columns)
 cols[0], cols[1] = cols[1], cols[0]
 target_all_exp = target_all_exp[cols]
 
+# Only Source
+source_all_exp['Y'] = max(source_all_exp['Y']) - source_all_exp['Y']
+
 source_all_exp = source_all_exp.sort_values(by=['X', 'Y'])
 target_all_exp = target_all_exp.sort_values(by=['x', 'y'])
 source_celltype = source_celltype.sort_values(by=['X', 'Y'])
