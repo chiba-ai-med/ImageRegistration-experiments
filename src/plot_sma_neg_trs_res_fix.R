@@ -7,10 +7,6 @@ infile3 <- commandArgs(trailingOnly=TRUE)[3]
 infile4 <- commandArgs(trailingOnly=TRUE)[4]
 outfile1 <- commandArgs(trailingOnly=TRUE)[5]
 outfile2 <- commandArgs(trailingOnly=TRUE)[6]
-# infile1 = 'data/sma_neg_trs/source/exp_res_fix.csv'
-# infile2 = 'data/sma_neg_trs/target/exp_res_fix.csv'
-# infile3 = 'data/sma_neg_trs/source/celltype_res_fix.csv'
-# infile4 = 'data/sma_neg_trs/target/celltype_res_fix.csv'
 
 # Loading
 source_exp <- read.table(infile1, header=FALSE)

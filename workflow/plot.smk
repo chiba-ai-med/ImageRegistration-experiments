@@ -13,6 +13,9 @@ ANTSMODES = ['antspy_rigid', 'antspy_affine']
 # SITKMODES = ['sitk_rigid', 'sitk_affine', 'sitk_bspline']
 SITKMODES = ['sitk_rigid']
 
+QGW_PARAMETERS = ['1E+8','1E+9','1E+10','1E+11','1E+12','1E+13','1E+14']
+MERGE_QGW_PARAMETERS = ['1E+8','1E+9','1E+10','1E+11','1E+12','1E+13','1E+14']
+
 rule all:
     input:
         expand('plot/{sample}/source/FINISH',
@@ -38,7 +41,11 @@ rule all:
         expand('plot/{sample}/{sitkmode}/warped.png',
             sample=SAMPLES, sitkmode=SITKMODES),
         expand('plot/{sample}/{sitkmode}/warped_overlay.png',
-            sample=SAMPLES, sitkmode=SITKMODES)
+            sample=SAMPLES, sitkmode=SITKMODES),
+        expand('plot/{sample}/qgw/{qgwp}/FINISH',
+            sample=SAMPLES, qgwp=QGW_PARAMETERS),
+        expand('plot/{sample}/merge_qgw/{merge_qgwp}/FINISH',
+            sample=SAMPLES, merge_qgwp=MERGE_QGW_PARAMETERS)
 
 rule plot_datasets:
     input:
@@ -129,3 +136,40 @@ rule plot_sitk:
         'logs/plot_{sample}_{sitkmode}.log'
     shell:
         'src/plot_sitk.sh {input} {output} >& {log}'
+
+rule plot_qgw:
+    input:
+        'output/qgw/{sample}/{qgwp}/warped.txt',
+        'data/{sample}/target/x.csv',
+        'data/{sample}/target/y.csv'
+    output:
+        'plot/{sample}/qgw/{qgwp}/FINISH'
+    container:
+        'docker://koki/ir-experiments-r:20240904'
+    resources:
+        mem_mb=500000
+    benchmark:
+        'benchmarks/plot_qgw_{sample}_{qgwp}.txt'
+    log:
+        'logs/plot_qgw_{sample}_{qgwp}.log'
+    shell:
+        'src/plot_ot.sh {input} {output} >& {log}'
+
+rule plot_merge_qgw:
+    input:
+        'output/merge_qgw/{sample}/{merge_qgwp}/warped.txt',
+        'data/{sample}/target/x.csv',
+        'data/{sample}/target/y.csv'
+    output:
+        'plot/{sample}/merge_qgw/{merge_qgwp}/FINISH'
+    container:
+        'docker://koki/ir-experiments-r:20240904'
+    resources:
+        mem_mb=500000
+    benchmark:
+        'benchmarks/plot_merge_qgw_{sample}_{merge_qgwp}.txt'
+    log:
+        'logs/plot_merge_qgw_{sample}_{merge_qgwp}.log'
+    shell:
+        'src/plot_ot.sh {input} {output} >& {log}'
+

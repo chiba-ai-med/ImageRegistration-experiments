@@ -11,14 +11,6 @@ infile7 <- commandArgs(trailingOnly=TRUE)[7]
 infile8 <- commandArgs(trailingOnly=TRUE)[8]
 outfile1 <- commandArgs(trailingOnly=TRUE)[9]
 outfile2 <- commandArgs(trailingOnly=TRUE)[10]
-# infile1 <- 'data/sma_neg_trs/source/exp.csv'
-# infile2 <- 'data/sma_neg_trs/target/exp.csv'
-# infile3 <- 'data/sma_neg_trs/source/celltype.csv'
-# infile4 <- 'data/sma_neg_trs/target/celltype.csv'
-# infile5 <- 'data/sma_neg_trs/source/x.csv'
-# infile6 <- 'data/sma_neg_trs/target/x.csv'
-# infile7 <- 'data/sma_neg_trs/source/y.csv'
-# infile8 <- 'data/sma_neg_trs/target/y.csv'
 
 # Loading
 source_exp <- read.csv(infile1, header=TRUE)

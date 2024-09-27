@@ -53,6 +53,12 @@ target_x_coordinate = np.loadtxt(infile7, dtype='int')
 source_y_coordinate = np.loadtxt(infile8, dtype='int')
 target_y_coordinate = np.loadtxt(infile9, dtype='int')
 
+# Re-numbering
+source_x_coordinate = np.argsort(np.argsort(source_x_coordinate))
+target_x_coordinate = np.argsort(np.argsort(target_x_coordinate))
+source_y_coordinate = np.argsort(np.argsort(source_y_coordinate))
+target_y_coordinate = np.argsort(np.argsort(target_y_coordinate))
+
 # CSV => Numpy Array
 source_img_array = csv2img(source_x_coordinate, source_y_coordinate, source_exp)
 target_img_array = csv2img(target_x_coordinate, target_y_coordinate, target_exp)
