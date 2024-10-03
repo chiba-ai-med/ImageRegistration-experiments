@@ -2,6 +2,7 @@ library("Mus.musculus")
 library("tagcloud")
 library("viridis")
 library("ggplot2")
+library("fields")
 
 .mycolor <- function(z){
 smoothPalette(z,

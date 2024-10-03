@@ -23,9 +23,6 @@ source_y_coordinate <- unlist(read.csv(infile7, header=FALSE))
 target_y_coordinate <- unlist(read.csv(infile8, header=FALSE))
 
 # Pre-processing
-source_name <- colnames(source_exp)[1:ncol(source_exp)]
-target_name <- colnames(target_exp)[1:ncol(target_exp)]
-
 source_exp <- unlist(source_exp)
 target_exp <- unlist(target_exp)
 
@@ -44,14 +41,14 @@ outdir_source <- gsub("FINISH", "", outfile1)
 outdir_target <- gsub("FINISH", "", outfile2)
 
 print("Plot (Source)")
-outfile_source <- paste0(outdir_source, source_name, ".png")
+outfile_source <- paste0(outdir_source, "SHexCer.png")
 png(outfile_source, width=1200, height=1200, bg="transparent")
 .plot_tissue_section(source_x_coordinate, source_y_coordinate,
     source_exp, cex=3)
 dev.off()
 
 print("Plot (Target)")
-outfile_target <- paste0(outdir_target, target_name, ".png")
+outfile_target <- paste0(outdir_target, "Gal3st1.png")
 png(outfile_target, width=1200, height=1200, bg="transparent")
 .plot_tissue_section(target_x_coordinate, target_y_coordinate,
     target_exp, cex=2)

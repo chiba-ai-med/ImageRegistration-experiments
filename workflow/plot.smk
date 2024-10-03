@@ -18,52 +18,68 @@ MERGE_QGW_PARAMETERS = ['1E+8','1E+9','1E+10','1E+11','1E+12','1E+13','1E+14']
 
 rule all:
     input:
+        # Datasets
         expand('plot/{sample}/source/FINISH',
             sample=SAMPLES),
         expand('plot/{sample}/target/FINISH',
             sample=SAMPLES),
-        expand('plot/{sample}/source/FINISH_res_fix',
+        expand('plot/{sample}/source/resize/FINISH',
             sample=SAMPLES),
-        expand('plot/{sample}/target/FINISH_res_fix',
+        expand('plot/{sample}/target/resize/FINISH',
             sample=SAMPLES),
-        expand('plot/{sample}/{antsmode}/fixed.png',
-            sample=SAMPLES, antsmode=ANTSMODES),
-        expand('plot/{sample}/{antsmode}/moving.png',
-            sample=SAMPLES, antsmode=ANTSMODES),
-        expand('plot/{sample}/{antsmode}/warped.png',
-            sample=SAMPLES, antsmode=ANTSMODES),
-        expand('plot/{sample}/{antsmode}/warped_overlay.png',
-            sample=SAMPLES, antsmode=ANTSMODES),
-        expand('plot/{sample}/{sitkmode}/fixed.png',
-            sample=SAMPLES, sitkmode=SITKMODES),
-        expand('plot/{sample}/{sitkmode}/moving.png',
-            sample=SAMPLES, sitkmode=SITKMODES),
-        expand('plot/{sample}/{sitkmode}/warped.png',
-            sample=SAMPLES, sitkmode=SITKMODES),
-        expand('plot/{sample}/{sitkmode}/warped_overlay.png',
-            sample=SAMPLES, sitkmode=SITKMODES),
-        expand('plot/{sample}/qgw/{qgwp}/FINISH',
-            sample=SAMPLES, qgwp=QGW_PARAMETERS),
-        expand('plot/{sample}/merge_qgw/{merge_qgwp}/FINISH',
-            sample=SAMPLES, merge_qgwp=MERGE_QGW_PARAMETERS)
 
+        # ANTsPy (R Plot)
+        expand('plot/{sample}/{antsmode}/warped_r_1.png',
+            sample=SAMPLES, antsmode=ANTSMODES),
+        expand('plot/{sample}/{antsmode}/warped_r_2.png',
+            sample=SAMPLES, antsmode=ANTSMODES),
+        expand('plot/{sample}/{antsmode}/warped_sum_r_1.png',
+            sample=SAMPLES, antsmode=ANTSMODES),
+        expand('plot/{sample}/{antsmode}/warped_sum_r_2.png',
+            sample=SAMPLES, antsmode=ANTSMODES),
+        expand('plot/{sample}/{antsmode}/warped_bin_sum_r_1.png',
+            sample=SAMPLES, antsmode=ANTSMODES),
+        expand('plot/{sample}/{antsmode}/warped_bin_sum_r_2.png',
+            sample=SAMPLES, antsmode=ANTSMODES),
+
+        # SimpleITK (R Plot)
+        expand('plot/{sample}/{sitkmode}/warped_r_1.png',
+            sample=SAMPLES, sitkmode=SITKMODES),
+        expand('plot/{sample}/{sitkmode}/warped_r_2.png',
+            sample=SAMPLES, sitkmode=SITKMODES),
+        expand('plot/{sample}/{sitkmode}/warped_sum_r_1.png',
+            sample=SAMPLES, sitkmode=SITKMODES),
+        expand('plot/{sample}/{sitkmode}/warped_sum_r_2.png',
+            sample=SAMPLES, sitkmode=SITKMODES),
+        expand('plot/{sample}/{sitkmode}/warped_bin_sum_r_1.png',
+            sample=SAMPLES, sitkmode=SITKMODES),
+        expand('plot/{sample}/{sitkmode}/warped_bin_sum_r_2.png',
+            sample=SAMPLES, sitkmode=SITKMODES),
+
+        # # OT
+        # expand('plot/{sample}/qgw/{qgwp}/FINISH',
+        #     sample=SAMPLES, qgwp=QGW_PARAMETERS),
+        # expand('plot/{sample}/merge_qgw/{merge_qgwp}/FINISH',
+        #     sample=SAMPLES, merge_qgwp=MERGE_QGW_PARAMETERS)
+
+# Datasets
 rule plot_datasets:
     input:
         'data/{sample}/source/exp.csv',
         'data/{sample}/target/exp.csv',
         'data/{sample}/source/celltype.csv',
         'data/{sample}/target/celltype.csv',
-        'data/{sample}/source/x.csv',
-        'data/{sample}/target/x.csv',
-        'data/{sample}/source/y.csv',
-        'data/{sample}/target/y.csv'
+        'data/{sample}/source/x_resize.csv',
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/source/y_resize.csv',
+        'data/{sample}/target/y_resize.csv'
     output:
         'plot/{sample}/source/FINISH',
         'plot/{sample}/target/FINISH'
     container:
-        'docker://koki/ir-experiments-r:20240904'
+        'docker://koki/ir-experiments-r:20240929'
     resources:
-        mem_mb=500000
+        mem_mb=1000000
     benchmark:
         'benchmarks/plot_{sample}.txt'
     log:
@@ -71,83 +87,176 @@ rule plot_datasets:
     shell:
         'src/plot_{wildcards.sample}.sh {input} {output} >& {log}'
 
-rule plot_datasets_res_fix:
+rule plot_datasets_resize:
     input:
-        'data/{sample}/source/exp_res_fix.csv',
-        'data/{sample}/target/exp_res_fix.csv',
-        'data/{sample}/source/celltype_res_fix.csv',
-        'data/{sample}/target/celltype_res_fix.csv'
+        'data/{sample}/source/exp_resize.csv',
+        'data/{sample}/target/exp_resize.csv',
+        'data/{sample}/source/celltype_resize.csv',
+        'data/{sample}/target/celltype_resize.csv',
+        'data/{sample}/source/x_resize.csv',
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/source/y_resize.csv',
+        'data/{sample}/target/y_resize.csv'
     output:
-        'plot/{sample}/source/FINISH_res_fix',
-        'plot/{sample}/target/FINISH_res_fix'
+        'plot/{sample}/source/resize/FINISH',
+        'plot/{sample}/target/resize/FINISH'
     container:
-        'docker://koki/ir-experiments-r:20240904'
+        'docker://koki/ir-experiments-r:20240929'
     resources:
-        mem_mb=500000
+        mem_mb=1000000
     benchmark:
-        'benchmarks/plot_{sample}_res_fix.txt'
+        'benchmarks/plot_{sample}_resize.txt'
     log:
-        'logs/plot_{sample}_res_fix.log'
+        'logs/plot_{sample}_resize.log'
     shell:
-        'src/plot_{wildcards.sample}_res_fix.sh {input} {output} >& {log}'
+        'src/plot_{wildcards.sample}.sh {input} {output} >& {log}'
 
-rule plot_antspy:
+# ANTsPy
+rule plot_antspy_r:
     input:
-        'data/{sample}/source/exp_res_fix.nii',
-        'data/{sample}/target/exp_res_fix.nii',
-        'output/{antsmode}/{sample}/warped.csv'
+        'output/{antsmode}/{sample}/warped.csv',
+        'output/{antsmode}/{sample}/warped_vec.csv',
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/target/y_resize.csv'
     output:
-        'plot/{sample}/{antsmode}/fixed.png',
-        'plot/{sample}/{antsmode}/moving.png',
-        'plot/{sample}/{antsmode}/warped.png',
-        'plot/{sample}/{antsmode}/warped_overlay.png'
+        'plot/{sample}/{antsmode}/warped_r_1.png',
+        'plot/{sample}/{antsmode}/warped_r_2.png'
     wildcard_constraints:
         antsmode='|'.join([re.escape(x) for x in ANTSMODES])
     container:
-        'docker://koki/ir-experiments:20240911'
+        'docker://koki/ir-experiments-r:20240929'
     resources:
-        mem_mb=500000
+        mem_mb=1000000
     benchmark:
-        'benchmarks/plot_{sample}_{antsmode}.txt'
+        'benchmarks/plot_antspy_r_{sample}_{antsmode}.txt'
     log:
-        'logs/plot_{sample}_{antsmode}.log'
+        'logs/plot_antspy_r_{sample}_{antsmode}.log'
     shell:
-        'src/plot_antspy.sh {input} {output} >& {log}'
+        'src/plot_ir_r.sh {input} {output} >& {log}'
 
-rule plot_sitk:
+rule plot_antspy_sum_r:
     input:
-        'data/{sample}/source/exp_res_fix.nii',
-        'data/{sample}/target/exp_res_fix.nii',
-        'output/{sitkmode}/{sample}/warped.csv'
+        'output/{antsmode}/{sample}/warped_sum.csv',
+        'output/{antsmode}/{sample}/warped_sum_vec.csv',
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/target/y_resize.csv'
     output:
-        'plot/{sample}/{sitkmode}/fixed.png',
-        'plot/{sample}/{sitkmode}/moving.png',
-        'plot/{sample}/{sitkmode}/warped.png',
-        'plot/{sample}/{sitkmode}/warped_overlay.png'
+        'plot/{sample}/{antsmode}/warped_sum_r_1.png',
+        'plot/{sample}/{antsmode}/warped_sum_r_2.png'
+    wildcard_constraints:
+        antsmode='|'.join([re.escape(x) for x in ANTSMODES])
+    container:
+        'docker://koki/ir-experiments-r:20240929'
+    resources:
+        mem_mb=1000000
+    benchmark:
+        'benchmarks/plot_antspy_sum_r_{sample}_{antsmode}.txt'
+    log:
+        'logs/plot_antspy_sum_r_{sample}_{antsmode}.log'
+    shell:
+        'src/plot_ir_r.sh {input} {output} >& {log}'
+
+rule plot_antspy_bin_sum_r:
+    input:
+        'output/{antsmode}/{sample}/warped_bin_sum.csv',
+        'output/{antsmode}/{sample}/warped_bin_sum_vec.csv',
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/target/y_resize.csv'
+    output:
+        'plot/{sample}/{antsmode}/warped_bin_sum_r_1.png',
+        'plot/{sample}/{antsmode}/warped_bin_sum_r_2.png'
+    wildcard_constraints:
+        antsmode='|'.join([re.escape(x) for x in ANTSMODES])
+    container:
+        'docker://koki/ir-experiments-r:20240929'
+    resources:
+        mem_mb=1000000
+    benchmark:
+        'benchmarks/plot_antspy_bin_sum_r_{sample}_{antsmode}.txt'
+    log:
+        'logs/plot_antspy_bin_sum_r_{sample}_{antsmode}.log'
+    shell:
+        'src/plot_ir_r.sh {input} {output} >& {log}'
+
+# SimpleITK
+rule plot_sitk_r:
+    input:
+        'output/{sitkmode}/{sample}/warped.csv',
+        'output/{sitkmode}/{sample}/warped_vec.csv',
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/target/y_resize.csv'
+    output:
+        'plot/{sample}/{sitkmode}/warped_r_1.png',
+        'plot/{sample}/{sitkmode}/warped_r_2.png'
     wildcard_constraints:
         sitkmode='|'.join([re.escape(x) for x in SITKMODES])
     container:
-        'docker://koki/ir-experiments:20240911'
+        'docker://koki/ir-experiments-r:20240929'
     resources:
-        mem_mb=500000
+        mem_mb=1000000
     benchmark:
-        'benchmarks/plot_{sample}_{sitkmode}.txt'
+        'benchmarks/plot_sitk_r_{sample}_{sitkmode}.txt'
     log:
-        'logs/plot_{sample}_{sitkmode}.log'
+        'logs/plot_sitk_r_{sample}_{sitkmode}.log'
     shell:
-        'src/plot_sitk.sh {input} {output} >& {log}'
+        'src/plot_ir_r.sh {input} {output} >& {log}'
 
+rule plot_sitk_sum_r:
+    input:
+        'output/{sitkmode}/{sample}/warped_sum.csv',
+        'output/{sitkmode}/{sample}/warped_sum_vec.csv',
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/target/y_resize.csv'
+    output:
+        'plot/{sample}/{sitkmode}/warped_sum_r_1.png',
+        'plot/{sample}/{sitkmode}/warped_sum_r_2.png'
+    wildcard_constraints:
+        sitkmode='|'.join([re.escape(x) for x in SITKMODES])
+    container:
+        'docker://koki/ir-experiments-r:20240929'
+    resources:
+        mem_mb=1000000
+    benchmark:
+        'benchmarks/plot_sitk_sum_r_{sample}_{sitkmode}.txt'
+    log:
+        'logs/plot_sitk_sum_r_{sample}_{sitkmode}.log'
+    shell:
+        'src/plot_ir_r.sh {input} {output} >& {log}'
+
+rule plot_sitk_bin_sum_r:
+    input:
+        'output/{sitkmode}/{sample}/warped_bin_sum.csv',
+        'output/{sitkmode}/{sample}/warped_bin_sum_vec.csv',
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/target/y_resize.csv'
+    output:
+        'plot/{sample}/{sitkmode}/warped_bin_sum_r_1.png',
+        'plot/{sample}/{sitkmode}/warped_bin_sum_r_2.png'
+    wildcard_constraints:
+        sitkmode='|'.join([re.escape(x) for x in SITKMODES])
+    container:
+        'docker://koki/ir-experiments-r:20240929'
+    resources:
+        mem_mb=1000000
+    benchmark:
+        'benchmarks/plot_sitk_bin_sum_r_{sample}_{sitkmode}.txt'
+    log:
+        'logs/plot_sitk_bin_sum_r_{sample}_{sitkmode}.log'
+    shell:
+        'src/plot_ir_r.sh {input} {output} >& {log}'
+
+# OT
 rule plot_qgw:
     input:
         'output/qgw/{sample}/{qgwp}/warped.txt',
-        'data/{sample}/target/x.csv',
-        'data/{sample}/target/y.csv'
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/target/y_resize.csv'
     output:
         'plot/{sample}/qgw/{qgwp}/FINISH'
     container:
-        'docker://koki/ir-experiments-r:20240904'
+        'docker://koki/ir-experiments-r:20240929'
     resources:
-        mem_mb=500000
+        mem_mb=1000000
     benchmark:
         'benchmarks/plot_qgw_{sample}_{qgwp}.txt'
     log:
@@ -158,14 +267,14 @@ rule plot_qgw:
 rule plot_merge_qgw:
     input:
         'output/merge_qgw/{sample}/{merge_qgwp}/warped.txt',
-        'data/{sample}/target/x.csv',
-        'data/{sample}/target/y.csv'
+        'data/{sample}/target/x_resize.csv',
+        'data/{sample}/target/y_resize.csv'
     output:
         'plot/{sample}/merge_qgw/{merge_qgwp}/FINISH'
     container:
-        'docker://koki/ir-experiments-r:20240904'
+        'docker://koki/ir-experiments-r:20240929'
     resources:
-        mem_mb=500000
+        mem_mb=1000000
     benchmark:
         'benchmarks/plot_merge_qgw_{sample}_{merge_qgwp}.txt'
     log:

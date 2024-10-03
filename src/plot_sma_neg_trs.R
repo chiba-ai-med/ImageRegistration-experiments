@@ -11,6 +11,14 @@ infile7 <- commandArgs(trailingOnly=TRUE)[7]
 infile8 <- commandArgs(trailingOnly=TRUE)[8]
 outfile1 <- commandArgs(trailingOnly=TRUE)[9]
 outfile2 <- commandArgs(trailingOnly=TRUE)[10]
+# infile1 = 'data/sma_neg_trs/source/exp.csv'
+# infile2 = 'data/sma_neg_trs/target/exp.csv'
+# infile3 = 'data/sma_neg_trs/source/celltype.csv'
+# infile4 = 'data/sma_neg_trs/target/celltype.csv'
+# infile5 = 'data/sma_neg_trs/source/x.csv'
+# infile6 = 'data/sma_neg_trs/target/x.csv'
+# infile7 = 'data/sma_neg_trs/source/y.csv'
+# infile8 = 'data/sma_neg_trs/target/y.csv'
 
 # Loading
 source_exp <- read.csv(infile1, header=TRUE)
@@ -23,9 +31,6 @@ source_y_coordinate <- unlist(read.csv(infile7, header=FALSE))
 target_y_coordinate <- unlist(read.csv(infile8, header=FALSE))
 
 # Pre-processing
-source_name <- colnames(source_exp)[1:ncol(source_exp)]
-target_name <- colnames(target_exp)[1:ncol(target_exp)]
-
 source_exp <- unlist(source_exp)
 target_exp <- unlist(target_exp)
 
@@ -44,14 +49,14 @@ outdir_source <- gsub("FINISH", "", outfile1)
 outdir_target <- gsub("FINISH", "", outfile2)
 
 print("Plot (Source)")
-outfile_source <- paste0(outdir_source, source_name, ".png")
+outfile_source <- paste0(outdir_source, "SHexCer.png")
 png(outfile_source, width=1200, height=1200, bg="transparent")
 .plot_tissue_section(source_x_coordinate, source_y_coordinate,
     source_exp, cex=2)
 dev.off()
 
 print("Plot (Target)")
-outfile_target <- paste0(outdir_target, target_name, ".png")
+outfile_target <- paste0(outdir_target, "Gal3st1.png")
 png(outfile_target, width=1000, height=1000, bg="transparent")
 .plot_tissue_section(target_x_coordinate, target_y_coordinate,
     target_exp, cex=2)

@@ -48,3 +48,4 @@ benchmarks
 *.tsv
 hoge*
 data
+plot

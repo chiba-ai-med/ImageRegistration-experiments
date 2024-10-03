@@ -2,6 +2,15 @@ import SimpleITK as sitk
 import re
 import numpy as np
 
+def renumber_sequence(sequence):
+    unique_values = {value: idx for idx, value in enumerate(sorted(set(sequence)))}
+    return [unique_values[value] for value in sequence]
+
+def csv2img3(x, y, exp):
+    img_array = np.zeros((max(x) - min(x) + 1, max(y) - min(y) + 1))
+    img_array[x - min(x), y - min(y)] = exp
+    return img_array
+
 def apply_function_to_columns(dataframe, func, **kwargs):
     result_list = [func(dataframe[col], **kwargs) for col in dataframe.columns]
     return result_list

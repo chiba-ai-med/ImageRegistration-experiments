@@ -10,18 +10,19 @@ SAMPLES = ['sma_neg_trs', 'public_neg_trs_1', 'public_neg_trs_2', 'public_neg_tr
 QGW_PARAMETERS = ['1E+8','1E+9','1E+10','1E+11','1E+12','1E+13','1E+14']
 MERGE_QGW_PARAMETERS = ['1E+8','1E+9','1E+10','1E+11','1E+12','1E+13','1E+14']
 
-container: 'docker://koki/ir-experiments:20240911'
-
 rule all:
     input:
+        # qGW
         expand('output/qgw/{sample}/{qgwp}/plan.pkl',
             sample=SAMPLES, qgwp=QGW_PARAMETERS),
         expand('output/qgw/{sample}/{qgwp}/warped.txt',
             sample=SAMPLES, qgwp=QGW_PARAMETERS),
+
+        # Merged qGW
         expand('output/merge_qgw/{sample}/{merge_qgwp}/plan.pkl',
             sample=SAMPLES, merge_qgwp=MERGE_QGW_PARAMETERS),
         expand('output/merge_qgw/{sample}/{merge_qgwp}/warped.txt',
-            sample=SAMPLES, merge_qgwp=MERGE_QGW_PARAMETERS),
+            sample=SAMPLES, merge_qgwp=MERGE_QGW_PARAMETERS)
 
 #############################################
 # Quantized Gromov-Wasserstein
