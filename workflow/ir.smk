@@ -35,15 +35,6 @@ rule all:
         expand('output/{antsmode}/{sample}/tx_sum.pkl',
             antsmode=ANTSMODES, sample=SAMPLES),
 
-        # expand('output/{antsmode}/{sample}/warped_bin_sum.csv',
-        #     antsmode=ANTSMODES, sample=SAMPLES),
-        # expand('output/{antsmode}/{sample}/warped_bin_sum_vec.csv',
-        #     antsmode=ANTSMODES, sample=SAMPLES),
-        # expand('output/{antsmode}/{sample}/warped_bin_sum.pkl',
-        #     antsmode=ANTSMODES, sample=SAMPLES),
-        # expand('output/{antsmode}/{sample}/tx_bin_sum.pkl',
-        #     antsmode=ANTSMODES, sample=SAMPLES),
-
         # SimpleITK
         expand('output/{sitkmode}/{sample}/warped.csv',
             sitkmode=SITKMODES, sample=SAMPLES),

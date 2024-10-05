@@ -38,10 +38,6 @@ rule all:
             sample=SAMPLES, antsmode=ANTSMODES),
         expand('plot/{sample}/{antsmode}/warped_sum_r_2.png',
             sample=SAMPLES, antsmode=ANTSMODES),
-        # expand('plot/{sample}/{antsmode}/warped_bin_sum_r_1.png',
-        #     sample=SAMPLES, antsmode=ANTSMODES),
-        # expand('plot/{sample}/{antsmode}/warped_bin_sum_r_2.png',
-        #     sample=SAMPLES, antsmode=ANTSMODES),
 
         # SimpleITK (R Plot)
         expand('plot/{sample}/{sitkmode}/warped_r_1.png',
