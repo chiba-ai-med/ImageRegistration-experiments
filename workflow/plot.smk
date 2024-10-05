@@ -19,14 +19,15 @@ MERGE_QGW_PARAMETERS = ['1E+8','1E+9','1E+10','1E+11','1E+12','1E+13','1E+14']
 rule all:
     input:
         # Datasets
-        expand('plot/{sample}/source/FINISH',
-            sample=SAMPLES),
-        expand('plot/{sample}/target/FINISH',
-            sample=SAMPLES),
-        expand('plot/{sample}/source/resize/FINISH',
-            sample=SAMPLES),
-        expand('plot/{sample}/target/resize/FINISH',
-            sample=SAMPLES),
+        expand('plot/{sample}/source/source.png', sample=SAMPLES),
+        expand('plot/{sample}/target/target.png', sample=SAMPLES),
+        expand('plot/{sample}/source/celltype.png', sample=SAMPLES),
+        expand('plot/{sample}/target/celltype.png', sample=SAMPLES),
+
+        expand('plot/{sample}/source/res_fix/source.png', sample=SAMPLES),
+        expand('plot/{sample}/target/res_fix/target.png', sample=SAMPLES),
+        expand('plot/{sample}/source/res_fix/celltype.png', sample=SAMPLES),
+        expand('plot/{sample}/target/res_fix/celltype.png', sample=SAMPLES),
 
         # ANTsPy (R Plot)
         expand('plot/{sample}/{antsmode}/warped_r_1.png',
@@ -37,10 +38,10 @@ rule all:
             sample=SAMPLES, antsmode=ANTSMODES),
         expand('plot/{sample}/{antsmode}/warped_sum_r_2.png',
             sample=SAMPLES, antsmode=ANTSMODES),
-        expand('plot/{sample}/{antsmode}/warped_bin_sum_r_1.png',
-            sample=SAMPLES, antsmode=ANTSMODES),
-        expand('plot/{sample}/{antsmode}/warped_bin_sum_r_2.png',
-            sample=SAMPLES, antsmode=ANTSMODES),
+        # expand('plot/{sample}/{antsmode}/warped_bin_sum_r_1.png',
+        #     sample=SAMPLES, antsmode=ANTSMODES),
+        # expand('plot/{sample}/{antsmode}/warped_bin_sum_r_2.png',
+        #     sample=SAMPLES, antsmode=ANTSMODES),
 
         # SimpleITK (R Plot)
         expand('plot/{sample}/{sitkmode}/warped_r_1.png',
@@ -56,11 +57,11 @@ rule all:
         expand('plot/{sample}/{sitkmode}/warped_bin_sum_r_2.png',
             sample=SAMPLES, sitkmode=SITKMODES),
 
-        # # OT
-        # expand('plot/{sample}/qgw/{qgwp}/FINISH',
-        #     sample=SAMPLES, qgwp=QGW_PARAMETERS),
-        # expand('plot/{sample}/merge_qgw/{merge_qgwp}/FINISH',
-        #     sample=SAMPLES, merge_qgwp=MERGE_QGW_PARAMETERS)
+        # OT
+        expand('plot/{sample}/qgw/{qgwp}/FINISH',
+            sample=SAMPLES, qgwp=QGW_PARAMETERS),
+        expand('plot/{sample}/merge_qgw/{merge_qgwp}/FINISH',
+            sample=SAMPLES, merge_qgwp=MERGE_QGW_PARAMETERS)
 
 # Datasets
 rule plot_datasets:
@@ -69,13 +70,15 @@ rule plot_datasets:
         'data/{sample}/target/exp.csv',
         'data/{sample}/source/celltype.csv',
         'data/{sample}/target/celltype.csv',
-        'data/{sample}/source/x_resize.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/source/y_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/source/x.csv',
+        'data/{sample}/target/x.csv',
+        'data/{sample}/source/y.csv',
+        'data/{sample}/target/y.csv'
     output:
-        'plot/{sample}/source/FINISH',
-        'plot/{sample}/target/FINISH'
+        'plot/{sample}/source/source.png',
+        'plot/{sample}/target/target.png',
+        'plot/{sample}/source/celltype.png',
+        'plot/{sample}/target/celltype.png'
     container:
         'docker://koki/ir-experiments-r:20240929'
     resources:
@@ -87,27 +90,29 @@ rule plot_datasets:
     shell:
         'src/plot_{wildcards.sample}.sh {input} {output} >& {log}'
 
-rule plot_datasets_resize:
+rule plot_datasets_res_fix:
     input:
-        'data/{sample}/source/exp_resize.csv',
-        'data/{sample}/target/exp_resize.csv',
-        'data/{sample}/source/celltype_resize.csv',
-        'data/{sample}/target/celltype_resize.csv',
-        'data/{sample}/source/x_resize.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/source/y_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/source/exp_res_fix.csv',
+        'data/{sample}/target/exp_res_fix.csv',
+        'data/{sample}/source/celltype_res_fix.csv',
+        'data/{sample}/target/celltype_res_fix.csv',
+        'data/{sample}/source/x_res_fix.csv',
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/source/y_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
-        'plot/{sample}/source/resize/FINISH',
-        'plot/{sample}/target/resize/FINISH'
+        'plot/{sample}/source/res_fix/source.png',
+        'plot/{sample}/target/res_fix/target.png',
+        'plot/{sample}/source/res_fix/celltype.png',
+        'plot/{sample}/target/res_fix/celltype.png'
     container:
         'docker://koki/ir-experiments-r:20240929'
     resources:
         mem_mb=1000000
     benchmark:
-        'benchmarks/plot_{sample}_resize.txt'
+        'benchmarks/plot_{sample}_res_fix.txt'
     log:
-        'logs/plot_{sample}_resize.log'
+        'logs/plot_{sample}_res_fix.log'
     shell:
         'src/plot_{wildcards.sample}.sh {input} {output} >& {log}'
 
@@ -116,8 +121,8 @@ rule plot_antspy_r:
     input:
         'output/{antsmode}/{sample}/warped.csv',
         'output/{antsmode}/{sample}/warped_vec.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'plot/{sample}/{antsmode}/warped_r_1.png',
         'plot/{sample}/{antsmode}/warped_r_2.png'
@@ -138,8 +143,8 @@ rule plot_antspy_sum_r:
     input:
         'output/{antsmode}/{sample}/warped_sum.csv',
         'output/{antsmode}/{sample}/warped_sum_vec.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'plot/{sample}/{antsmode}/warped_sum_r_1.png',
         'plot/{sample}/{antsmode}/warped_sum_r_2.png'
@@ -160,8 +165,8 @@ rule plot_antspy_bin_sum_r:
     input:
         'output/{antsmode}/{sample}/warped_bin_sum.csv',
         'output/{antsmode}/{sample}/warped_bin_sum_vec.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'plot/{sample}/{antsmode}/warped_bin_sum_r_1.png',
         'plot/{sample}/{antsmode}/warped_bin_sum_r_2.png'
@@ -183,8 +188,8 @@ rule plot_sitk_r:
     input:
         'output/{sitkmode}/{sample}/warped.csv',
         'output/{sitkmode}/{sample}/warped_vec.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'plot/{sample}/{sitkmode}/warped_r_1.png',
         'plot/{sample}/{sitkmode}/warped_r_2.png'
@@ -205,8 +210,8 @@ rule plot_sitk_sum_r:
     input:
         'output/{sitkmode}/{sample}/warped_sum.csv',
         'output/{sitkmode}/{sample}/warped_sum_vec.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'plot/{sample}/{sitkmode}/warped_sum_r_1.png',
         'plot/{sample}/{sitkmode}/warped_sum_r_2.png'
@@ -227,8 +232,8 @@ rule plot_sitk_bin_sum_r:
     input:
         'output/{sitkmode}/{sample}/warped_bin_sum.csv',
         'output/{sitkmode}/{sample}/warped_bin_sum_vec.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'plot/{sample}/{sitkmode}/warped_bin_sum_r_1.png',
         'plot/{sample}/{sitkmode}/warped_bin_sum_r_2.png'
@@ -249,8 +254,8 @@ rule plot_sitk_bin_sum_r:
 rule plot_qgw:
     input:
         'output/qgw/{sample}/{qgwp}/warped.txt',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'plot/{sample}/qgw/{qgwp}/FINISH'
     container:
@@ -267,8 +272,8 @@ rule plot_qgw:
 rule plot_merge_qgw:
     input:
         'output/merge_qgw/{sample}/{merge_qgwp}/warped.txt',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'plot/{sample}/merge_qgw/{merge_qgwp}/FINISH'
     container:

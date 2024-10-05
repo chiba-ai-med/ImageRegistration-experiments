@@ -35,14 +35,14 @@ rule all:
         expand('output/{antsmode}/{sample}/tx_sum.pkl',
             antsmode=ANTSMODES, sample=SAMPLES),
 
-        expand('output/{antsmode}/{sample}/warped_bin_sum.csv',
-            antsmode=ANTSMODES, sample=SAMPLES),
-        expand('output/{antsmode}/{sample}/warped_bin_sum_vec.csv',
-            antsmode=ANTSMODES, sample=SAMPLES),
-        expand('output/{antsmode}/{sample}/warped_bin_sum.pkl',
-            antsmode=ANTSMODES, sample=SAMPLES),
-        expand('output/{antsmode}/{sample}/tx_bin_sum.pkl',
-            antsmode=ANTSMODES, sample=SAMPLES),
+        # expand('output/{antsmode}/{sample}/warped_bin_sum.csv',
+        #     antsmode=ANTSMODES, sample=SAMPLES),
+        # expand('output/{antsmode}/{sample}/warped_bin_sum_vec.csv',
+        #     antsmode=ANTSMODES, sample=SAMPLES),
+        # expand('output/{antsmode}/{sample}/warped_bin_sum.pkl',
+        #     antsmode=ANTSMODES, sample=SAMPLES),
+        # expand('output/{antsmode}/{sample}/tx_bin_sum.pkl',
+        #     antsmode=ANTSMODES, sample=SAMPLES),
 
         # SimpleITK
         expand('output/{sitkmode}/{sample}/warped.csv',
@@ -74,12 +74,12 @@ rule all:
 
 rule antspy:
     input:
-        'data/{sample}/source/exp_resize.csv',
-        'data/{sample}/target/exp_resize.csv',
-        'data/{sample}/source/x_resize.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/source/y_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/source/exp_res_fix.csv',
+        'data/{sample}/target/exp_res_fix.csv',
+        'data/{sample}/source/x_res_fix.csv',
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/source/y_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'output/{antsmode}/{sample}/warped.csv',
         'output/{antsmode}/{sample}/warped_vec.csv',
@@ -98,12 +98,12 @@ rule antspy:
 
 rule antspy_sum:
     input:
-        'data/{sample}/source/sum_exp_resize.csv',
-        'data/{sample}/target/sum_exp_resize.csv',
-        'data/{sample}/source/x_resize.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/source/y_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/source/sum_exp_res_fix.csv',
+        'data/{sample}/target/sum_exp_res_fix.csv',
+        'data/{sample}/source/x_res_fix.csv',
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/source/y_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'output/{antsmode}/{sample}/warped_sum.csv',
         'output/{antsmode}/{sample}/warped_sum_vec.csv',
@@ -122,12 +122,12 @@ rule antspy_sum:
 
 rule antspy_bin_sum:
     input:
-        'data/{sample}/source/bin_sum_exp_resize.csv',
-        'data/{sample}/target/bin_sum_exp_resize.csv',
-        'data/{sample}/source/x_resize.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/source/y_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/source/bin_sum_exp_res_fix.csv',
+        'data/{sample}/target/bin_sum_exp_res_fix.csv',
+        'data/{sample}/source/x_res_fix.csv',
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/source/y_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'output/{antsmode}/{sample}/warped_bin_sum.csv',
         'output/{antsmode}/{sample}/warped_bin_sum_vec.csv',
@@ -146,12 +146,12 @@ rule antspy_bin_sum:
 
 rule sitk:
     input:
-        'data/{sample}/source/exp_resize.csv',
-        'data/{sample}/target/exp_resize.csv',
-        'data/{sample}/source/x_resize.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/source/y_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/source/exp_res_fix.csv',
+        'data/{sample}/target/exp_res_fix.csv',
+        'data/{sample}/source/x_res_fix.csv',
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/source/y_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'output/{sitkmode}/{sample}/warped.csv',
         'output/{sitkmode}/{sample}/warped_vec.csv',
@@ -170,12 +170,12 @@ rule sitk:
 
 rule sitk_sum:
     input:
-        'data/{sample}/source/sum_exp_resize.csv',
-        'data/{sample}/target/sum_exp_resize.csv',
-        'data/{sample}/source/x_resize.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/source/y_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/source/sum_exp_res_fix.csv',
+        'data/{sample}/target/sum_exp_res_fix.csv',
+        'data/{sample}/source/x_res_fix.csv',
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/source/y_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'output/{sitkmode}/{sample}/warped_sum.csv',
         'output/{sitkmode}/{sample}/warped_sum_vec.csv',
@@ -194,12 +194,12 @@ rule sitk_sum:
 
 rule sitk_bin_sum:
     input:
-        'data/{sample}/source/bin_sum_exp_resize.csv',
-        'data/{sample}/target/bin_sum_exp_resize.csv',
-        'data/{sample}/source/x_resize.csv',
-        'data/{sample}/target/x_resize.csv',
-        'data/{sample}/source/y_resize.csv',
-        'data/{sample}/target/y_resize.csv'
+        'data/{sample}/source/bin_sum_exp_res_fix.csv',
+        'data/{sample}/target/bin_sum_exp_res_fix.csv',
+        'data/{sample}/source/x_res_fix.csv',
+        'data/{sample}/target/x_res_fix.csv',
+        'data/{sample}/source/y_res_fix.csv',
+        'data/{sample}/target/y_res_fix.csv'
     output:
         'output/{sitkmode}/{sample}/warped_bin_sum.csv',
         'output/{sitkmode}/{sample}/warped_bin_sum_vec.csv',

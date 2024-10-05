@@ -43,6 +43,8 @@ source_y_coordinate = np.array(source_all_exp['Y'].values, dtype=np.int64)
 target_x_coordinate = np.array(target_all_exp['X'].values, dtype=np.int64)
 target_y_coordinate = np.array(target_all_exp['Y'].values, dtype=np.int64)
 
+source_y_coordinate = max(source_y_coordinate) + min(source_y_coordinate) - source_y_coordinate # Flipping x axis (Only Source)
+
 source_all_exp = source_all_exp.iloc[:, 2:]
 target_all_exp = target_all_exp.iloc[:, 2:]
 

@@ -16,7 +16,7 @@ target_y_coordinate <- unlist(read.csv(infile4, header=FALSE))
 
 # Plot
 png(outfile1, width=1200, height=1200)
-image.plot(t_source_exp)
+image.plot(t(t_source_exp[nrow(t_source_exp):1, ]))
 dev.off()
 
 png(outfile2, width=1200, height=1200, bg="transparent")

@@ -41,8 +41,8 @@ warped_np = warped.numpy()
 warped_np_vec = warped_np.T.flatten()
 
 # Save
-np.savetxt(outfile1, warped_np, fmt="%d")
-np.savetxt(outfile2, warped_np_vec, fmt="%d")
+np.savetxt(outfile1, warped_np)
+np.savetxt(outfile2, warped_np_vec)
 
 with open(outfile3, 'wb') as f:
     pickle.dump(warped, f)
