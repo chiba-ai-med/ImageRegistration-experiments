@@ -22,23 +22,23 @@ outfile2 = args[8]
 epsilon = float(args[9])
 
 # Loading Data
-source_exp = pd.read_csv(infile1, header=0)
-target_exp = pd.read_csv(infile2, header=0)
+source_all_exp = pd.read_csv(infile1, header=0)
+target_all_exp = pd.read_csv(infile2, header=0)
 source_x_coordinate = np.loadtxt(infile3)
 target_x_coordinate = np.loadtxt(infile4)
 source_y_coordinate = np.loadtxt(infile5)
 target_y_coordinate = np.loadtxt(infile6)
 
 # Column Names
-source_cols = source_exp.columns.to_numpy()
+source_cols = source_all_exp.columns.to_numpy()
 
 # Log-Transformation
-source_exp = np.log10(source_exp.to_numpy() + 1)
-target_exp = np.log10(target_exp.to_numpy() + 1)
+source_all_exp = np.log10(source_all_exp.to_numpy() + 1)
+target_all_exp = np.log10(target_all_exp.to_numpy() + 1)
 
 # Distance (Expression)
-C1_exp = distance.cdist(source_exp, source_exp)
-C2_exp = distance.cdist(target_exp, target_exp)
+C1_exp = distance.cdist(source_all_exp, source_all_exp)
+C2_exp = distance.cdist(target_all_exp, target_all_exp)
 
 # Distance (Coordinate)
 source_coordinate = np.stack([source_x_coordinate, source_y_coordinate], axis=1)
@@ -47,7 +47,7 @@ C1_cord = distance.cdist(source_coordinate, source_coordinate)
 C2_cord = distance.cdist(target_coordinate, target_coordinate)
 
 # Distance (Merge)
-w1, w2 = 0.1, 0.9
+w1, w2 = 0.01, 0.99
 C1 = w1 * C1_exp / np.max(C1_exp) + w2 * C1_cord / np.max(C1_cord)
 C2 = w1 * C2_exp / np.max(C2_exp) + w2 * C2_cord / np.max(C2_cord)
 
@@ -56,8 +56,8 @@ h1 = np.ones(C1.shape[0]) / C1.shape[0]
 h2 = np.ones(C2.shape[0]) / C2.shape[0]
 
 # Clustering（重いステップ1、C1/C2に対しては計算できなかった）
-part1 = KMeans(n_clusters=30, random_state=0, n_init="auto").fit(source_exp).labels_
-part2 = KMeans(n_clusters=30, random_state=0, n_init="auto").fit(target_exp).labels_
+part1 = KMeans(n_clusters=30, random_state=0, n_init="auto").fit(source_all_exp).labels_
+part2 = KMeans(n_clusters=30, random_state=0, n_init="auto").fit(target_all_exp).labels_
 
 # Cluster Center
 rep_indices1 = ot.gromov.get_graph_representants(C1, part1, rep_method='pagerank')
@@ -75,7 +75,7 @@ T_global, Ts_local, _, log = ot.gromov.quantized_fused_gromov_wasserstein_partit
     alpha=1., build_OT=False, log=True, reg=epsilon, verbose=True)
 
 # Transportation
-t_source_exp = np.zeros((target_exp.shape[0], source_exp.shape[1]))
+t_source_all_exp = np.zeros((target_all_exp.shape[0], source_all_exp.shape[1]))
 
 for i in range(30):
     list_Ti = []
@@ -92,7 +92,7 @@ for i in range(30):
         Ti = Ti / row_sums[:, np.newaxis]
     # Update
     position = np.where(part1 == i)[0]
-    t_source_exp += Ti.T @ source_exp[position, ]
+    t_source_all_exp += Ti.T @ source_all_exp[position, ]
 
 # Save
 with open(outfile1, 'wb') as f:
@@ -100,6 +100,6 @@ with open(outfile1, 'wb') as f:
     pickle.dump(Ts_local, f)
     pickle.dump(log, f)
 
-out = pd.DataFrame(t_source_exp)
+out = pd.DataFrame(t_source_all_exp)
 out.columns = source_cols
 out.to_csv(outfile2, index=False)

@@ -3,8 +3,6 @@ import os
 import sys
 import pandas as pd
 import numpy as np
-from functions import renumber_sequence
-# from src.functions import renumber_sequence
 
 # Arguments
 args = sys.argv
@@ -77,12 +75,6 @@ target_sum_exp = target_all_exp.to_numpy(dtype=np.float64).sum(axis=1)
 # Binarization
 bin_source_sum_exp = np.where(source_sum_exp > 0, 1, 0)
 bin_target_sum_exp = np.where(target_sum_exp > 0, 1, 0)
-
-# Re-numbering
-source_x_coordinate = renumber_sequence(source_x_coordinate)
-source_y_coordinate = renumber_sequence(source_y_coordinate)
-target_x_coordinate = renumber_sequence(target_x_coordinate)
-target_y_coordinate = renumber_sequence(target_y_coordinate)
 
 # Save
 source_exp.to_csv(outfile1, index=False, header=False)

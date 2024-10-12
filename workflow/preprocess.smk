@@ -86,4 +86,3 @@ rule preprocess_res_fix:
         'logs/preprocess_res_fix_{sample}.log'
     shell:
         'src/preprocess_res_fix.sh {input} {output} >& {log}'
-

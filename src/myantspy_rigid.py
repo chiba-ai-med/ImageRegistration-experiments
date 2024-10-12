@@ -19,13 +19,6 @@ outfile1 = args[7]
 outfile2 = args[8]
 outfile3 = args[9]
 outfile4 = args[10]
-# infile1 = 'data/public_neg_trs_1/source/exp.csv'
-# infile2 = 'data/public_neg_trs_1/target/exp.csv'
-# infile3 = 'data/public_neg_trs_1/source/x.csv'
-# infile4 = 'data/public_neg_trs_1/target/x.csv'
-# infile5 = 'data/public_neg_trs_1/source/y.csv'
-# infile6 = 'data/public_neg_trs_1/target/y.csv'
-
 
 # Loading
 source_exp = np.loadtxt(infile1)

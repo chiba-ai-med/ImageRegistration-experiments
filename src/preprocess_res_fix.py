@@ -36,19 +36,6 @@ outfile9 = args[22]
 outfile10 = args[23]
 outfile11 = args[24]
 outfile12 = args[25]
-# infile1 = 'data/public_neg_trs_1/source/exp.csv'
-# infile2 = 'data/public_neg_trs_1/target/exp.csv'
-# infile3 = 'data/public_neg_trs_1/source/all_exp.csv'
-# infile4 = 'data/public_neg_trs_1/source/sum_exp.csv'
-# infile5 = 'data/public_neg_trs_1/target/sum_exp.csv'
-# infile6 = 'data/public_neg_trs_1/source/bin_sum_exp.csv'
-# infile7 = 'data/public_neg_trs_1/target/bin_sum_exp.csv'
-# infile8 = 'data/public_neg_trs_1/source/celltype.csv'
-# infile9 = 'data/public_neg_trs_1/target/celltype.csv'
-# infile10 = 'data/public_neg_trs_1/source/x.csv'
-# infile11 = 'data/public_neg_trs_1/target/x.csv'
-# infile12 = 'data/public_neg_trs_1/source/y.csv'
-# infile13 = 'data/public_neg_trs_1/target/y.csv'
 
 # Loading
 source_exp = np.loadtxt(infile1)
@@ -150,8 +137,10 @@ source_celltype_img_array = [sitk.GetArrayFromImage(x).T for x in source_celltyp
 target_celltype_img_array = [sitk.GetArrayFromImage(x).T for x in target_celltype_img]
 
 # Vectorizing
-source_x_coordinate2, source_y_coordinate2 = np.nonzero(bin_source_sum_img_array)
-target_x_coordinate2, target_y_coordinate2 = np.nonzero(bin_target_sum_img_array)
+# source_x_coordinate2, source_y_coordinate2 = np.nonzero(bin_source_sum_img_array)
+# target_x_coordinate2, target_y_coordinate2 = np.nonzero(bin_target_sum_img_array)
+source_x_coordinate2, source_y_coordinate2 = np.unravel_index(np.arange(source_img_array.size), source_img_array.shape)
+target_x_coordinate2, target_y_coordinate2 = np.unravel_index(np.arange(target_img_array.size), target_img_array.shape)
 
 source_img_array_vec = source_img_array[source_x_coordinate2, source_y_coordinate2]
 target_img_array_vec = target_img_array[target_x_coordinate2, target_y_coordinate2]

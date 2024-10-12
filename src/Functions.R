@@ -2,7 +2,15 @@ library("Mus.musculus")
 library("tagcloud")
 library("viridis")
 library("ggplot2")
+library("dplyr")
 library("fields")
+
+# Jaccard index
+jaccard <- function(a, b) {
+    inter = sum(a*b)
+    union = length(a) + length(b) - inter
+    return (inter/union)
+}
 
 .mycolor <- function(z){
 smoothPalette(z,

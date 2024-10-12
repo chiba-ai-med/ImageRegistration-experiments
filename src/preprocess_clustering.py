@@ -11,8 +11,6 @@ infile1 = args[1]
 infile2 = args[2]
 outfile1 = args[3]
 outfile2 = args[4]
-# infile1 = 'data/public_neg_trs_1/source/sum_exp_res_fix.csv'
-# infile2 = 'data/public_neg_trs_1/target/sum_exp_res_fix.csv'
 
 # Loading
 source_sum_exp = np.loadtxt(infile1)
