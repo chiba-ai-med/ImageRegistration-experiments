@@ -24,10 +24,14 @@ rule all:
         # Datasets
         expand('plot/{sample}/source/source.png', sample=SAMPLES),
         expand('plot/{sample}/target/target.png', sample=SAMPLES),
+        expand('plot/{sample}/source/source_density.png', sample=SAMPLES),
+        expand('plot/{sample}/target/target_density.png', sample=SAMPLES),
         expand('plot/{sample}/source/celltype.png', sample=SAMPLES),
         expand('plot/{sample}/target/celltype.png', sample=SAMPLES),
         expand('plot/{sample}/source/res_fix/source.png', sample=SAMPLES),
         expand('plot/{sample}/target/res_fix/target.png', sample=SAMPLES),
+        expand('plot/{sample}/source/res_fix/source_density.png', sample=SAMPLES),
+        expand('plot/{sample}/target/res_fix/target_density.png', sample=SAMPLES),
         expand('plot/{sample}/source/res_fix/celltype.png', sample=SAMPLES),
         expand('plot/{sample}/target/res_fix/celltype.png', sample=SAMPLES),
         # ANTsPy (R Plot)
@@ -85,8 +89,10 @@ rule plot_datasets:
     output:
         'plot/{sample}/source/source.png',
         'plot/{sample}/target/target.png',
+        'plot/{sample}/source/source_density.png',
+        'plot/{sample}/target/target_density.png',
         'plot/{sample}/source/celltype.png',
-        'plot/{sample}/target/celltype.png'
+        'plot/{sample}/target/celltype.png',
     container:
         'docker://koki/ir-experiments-r:20240929'
     resources:
@@ -111,6 +117,8 @@ rule plot_datasets_res_fix:
     output:
         'plot/{sample}/source/res_fix/source.png',
         'plot/{sample}/target/res_fix/target.png',
+        'plot/{sample}/source/res_fix/source_density.png',
+        'plot/{sample}/target/res_fix/target_density.png',
         'plot/{sample}/source/res_fix/celltype.png',
         'plot/{sample}/target/res_fix/celltype.png'
     container:

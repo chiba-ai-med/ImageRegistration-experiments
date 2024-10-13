@@ -13,25 +13,18 @@ outfile1 <- commandArgs(trailingOnly=TRUE)[9]
 outfile2 <- commandArgs(trailingOnly=TRUE)[10]
 outfile3 <- commandArgs(trailingOnly=TRUE)[11]
 outfile4 <- commandArgs(trailingOnly=TRUE)[12]
+outfile5 <- commandArgs(trailingOnly=TRUE)[13]
+outfile6 <- commandArgs(trailingOnly=TRUE)[14]
 
 # Loading
-source_exp <- read.csv(infile1, header=TRUE)
-target_exp <- read.csv(infile2, header=TRUE)
+source_exp <- read.csv(infile1, header=FALSE)
+target_exp <- read.csv(infile2, header=FALSE)
 source_celltype <- read.csv(infile3, header=TRUE)
 target_celltype <- read.csv(infile4, header=TRUE)
 source_x_coordinate <- unlist(read.csv(infile5, header=FALSE))
 target_x_coordinate <- unlist(read.csv(infile6, header=FALSE))
 source_y_coordinate <- unlist(read.csv(infile7, header=FALSE))
 target_y_coordinate <- unlist(read.csv(infile8, header=FALSE))
-
-print(length(source_exp))
-print(length(target_exp))
-print(dim(source_celltype))
-print(dim(target_celltype))
-print(length(source_x_coordinate))
-print(length(target_x_coordinate))
-print(length(source_y_coordinate))
-print(length(target_y_coordinate))
 
 # Pre-processing
 source_exp <- unlist(source_exp)
@@ -48,6 +41,7 @@ target_celltype <- apply(target_celltype, 1, function(x){
 })
 
 # Plot
+## Slice Plot (Expression)
 png(outfile1, width=1200, height=1200, bg="transparent")
 .plot_tissue_section(source_x_coordinate, source_y_coordinate,
     source_exp, cex=2)
@@ -58,12 +52,26 @@ png(outfile2, width=1000, height=1000, bg="transparent")
     target_exp, cex=2)
 dev.off()
 
-png(outfile3, width=1200, height=1200, bg="transparent")
+## Density Plot (Expression)
+source_exp <- data.frame(Expression = source_exp)
+g1 <- ggplot(source_exp, aes(x = Expression)) +
+	geom_density(fill="red", alpha = 0.5) +
+	labs(x = "Log10(Expression + 1)", y = "Density")
+ggsave(outfile3, plot=g1, width = 12, height = 6, bg = "transparent")
+
+target_exp <- data.frame(Expression = target_exp)
+g2 <- ggplot(target_exp, aes(x = Expression)) +
+	geom_density(fill="blue", alpha = 0.5) +
+	labs(x = "Log10(Expression + 1)", y = "Density")
+ggsave(outfile4, plot=g2, width = 12, height = 6, bg = "transparent")
+
+## Slice Plot (Celltype)
+png(outfile5, width=1200, height=1200, bg="transparent")
 .plot_tissue_section2(source_x_coordinate, source_y_coordinate,
 	source_celltype, cex=2, position="topleft")
 dev.off()
 
-png(outfile4, width=1000, height=1000, bg="transparent")
+png(outfile6, width=1000, height=1000, bg="transparent")
 .plot_tissue_section2(target_x_coordinate, target_y_coordinate,
 	target_celltype, cex=2, position="topleft")
 dev.off()
