@@ -59,7 +59,7 @@ C2_cord = C2_cord / np.max(C2_cord)
 # Gromov-Wasserstein Distance
 p = np.ones(C1_cord.shape[0]) / C1_cord.shape[0]
 q = np.ones(C2_cord.shape[0]) / C2_cord.shape[0]
-P = ot.fused_gromov_wasserstein(C_exp, C1_cord, C2_cord, p, q, 'square_loss', alpha=0.99, epsilon=epsilon)
+P = ot.fused_gromov_wasserstein(C_exp, C1_cord, C2_cord, p, q, 'square_loss', alpha=0.5, epsilon=epsilon)
 
 if P.max() != 0:
     row_sums = P.sum(axis=1)

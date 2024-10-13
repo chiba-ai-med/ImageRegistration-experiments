@@ -47,7 +47,7 @@ C1_cord = distance.cdist(source_coordinate, source_coordinate)
 C2_cord = distance.cdist(target_coordinate, target_coordinate)
 
 # Distance (Merge)
-w1, w2 = 0.01, 0.99
+w1, w2 = 0.9, 0.1
 C1 = w1 * C1_exp / np.max(C1_exp) + w2 * C1_cord / np.max(C1_cord)
 C2 = w1 * C2_exp / np.max(C2_exp) + w2 * C2_cord / np.max(C2_cord)
 
