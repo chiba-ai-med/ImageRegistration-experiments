@@ -22,18 +22,8 @@ MERGED_QGW_PARAMETERS = ['1E+8','1E+9','1E+10','1E+11','1E+12','1E+13','1E+14']
 rule all:
     input:
         # Datasets
-        expand('plot/{sample}/source/source.png', sample=SAMPLES),
-        expand('plot/{sample}/target/target.png', sample=SAMPLES),
-        expand('plot/{sample}/source/source_density.png', sample=SAMPLES),
-        expand('plot/{sample}/target/target_density.png', sample=SAMPLES),
-        expand('plot/{sample}/source/celltype.png', sample=SAMPLES),
-        expand('plot/{sample}/target/celltype.png', sample=SAMPLES),
-        expand('plot/{sample}/source/res_fix/source.png', sample=SAMPLES),
-        expand('plot/{sample}/target/res_fix/target.png', sample=SAMPLES),
-        expand('plot/{sample}/source/res_fix/source_density.png', sample=SAMPLES),
-        expand('plot/{sample}/target/res_fix/target_density.png', sample=SAMPLES),
-        expand('plot/{sample}/source/res_fix/celltype.png', sample=SAMPLES),
-        expand('plot/{sample}/target/res_fix/celltype.png', sample=SAMPLES),
+        expand('plot/{sample}/dataset/FINISH', sample=SAMPLES),
+        expand('plot/{sample}/dataset/res_fix/FINISH', sample=SAMPLES),
         # ANTsPy (R Plot)
         expand('plot/{sample}/{antsmode}/warped_r_1.png',
             sample=SAMPLES, antsmode=ANTSMODES),
@@ -78,6 +68,7 @@ rule all:
 # Datasets
 rule plot_datasets:
     input:
+        'data/{sample}/source/all_exp.csv',
         'data/{sample}/source/exp.csv',
         'data/{sample}/target/exp.csv',
         'data/{sample}/source/celltype.csv',
@@ -87,12 +78,7 @@ rule plot_datasets:
         'data/{sample}/source/y.csv',
         'data/{sample}/target/y.csv'
     output:
-        'plot/{sample}/source/source.png',
-        'plot/{sample}/target/target.png',
-        'plot/{sample}/source/source_density.png',
-        'plot/{sample}/target/target_density.png',
-        'plot/{sample}/source/celltype.png',
-        'plot/{sample}/target/celltype.png',
+        'plot/{sample}/dataset/FINISH'
     container:
         'docker://koki/ir-experiments-r:20240929'
     resources:
@@ -115,12 +101,7 @@ rule plot_datasets_res_fix:
         'data/{sample}/source/y_res_fix.csv',
         'data/{sample}/target/y_res_fix.csv'
     output:
-        'plot/{sample}/source/res_fix/source.png',
-        'plot/{sample}/target/res_fix/target.png',
-        'plot/{sample}/source/res_fix/source_density.png',
-        'plot/{sample}/target/res_fix/target_density.png',
-        'plot/{sample}/source/res_fix/celltype.png',
-        'plot/{sample}/target/res_fix/celltype.png'
+        'plot/{sample}/dataset/res_fix/FINISH'
     container:
         'docker://koki/ir-experiments-r:20240929'
     resources:
@@ -130,7 +111,7 @@ rule plot_datasets_res_fix:
     log:
         'logs/plot_{sample}_res_fix.log'
     shell:
-        'src/plot_{wildcards.sample}.sh {input} {output} >& {log}'
+        'src/plot_{wildcards.sample}_res_fix.sh {input} {output} >& {log}'
 
 # ANTsPy
 rule plot_antspy_r:

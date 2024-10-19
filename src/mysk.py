@@ -26,11 +26,6 @@ target_exp = np.loadtxt(infile3)
 # Column Names
 source_cols = source_all_exp.columns.to_numpy()
 
-# Log-Transformation
-source_all_exp = np.log10(source_all_exp.to_numpy() + 1)
-source_exp = np.log10(source_exp + 1)
-target_exp = np.log10(target_exp + 1)
-
 # Distance (Expression)
 source_exp = source_exp.reshape(1, -1)
 target_exp = target_exp.reshape(1, -1)

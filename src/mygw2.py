@@ -35,6 +35,8 @@ source_coordinate = np.stack([source_x_coordinate, source_y_coordinate], axis=1)
 target_coordinate = np.stack([target_x_coordinate, target_y_coordinate], axis=1)
 C1_cord = distance.cdist(source_coordinate, source_coordinate)
 C2_cord = distance.cdist(target_coordinate, target_coordinate)
+C1_cord = C1_cord / np.max(C1_cord)
+C2_cord = C2_cord / np.max(C2_cord)
 
 # Gromov-Wasserstein Distance
 p = ot.unif(C1_cord.shape[0])

@@ -31,6 +31,8 @@ target_exp = np.log10(target_exp.to_numpy() + 1)
 # Distance
 C1 = distance.cdist(source_exp, source_exp)
 C2 = distance.cdist(target_exp, target_exp)
+C1 = C1 / np.max(C1)
+C2 = C2 / np.max(C2)
 
 # Merginal Distribution
 h1 = np.ones(C1.shape[0]) / C1.shape[0]

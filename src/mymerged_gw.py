@@ -32,10 +32,6 @@ target_y_coordinate = np.loadtxt(infile6)
 # Column Names
 source_cols = source_all_exp.columns.to_numpy()
 
-# Log-Transformation
-source_all_exp = np.log10(source_all_exp.to_numpy() + 1)
-target_all_exp = np.log10(target_all_exp.to_numpy() + 1)
-
 # Distance (Expression)
 C1_exp = distance.cdist(source_all_exp, source_all_exp)
 C2_exp = distance.cdist(target_all_exp, target_all_exp)

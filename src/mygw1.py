@@ -24,13 +24,11 @@ target_all_exp = pd.read_csv(infile2, header=0)
 # Column Names
 source_cols = source_all_exp.columns.to_numpy()
 
-# Log-Transformation
-source_all_exp = np.log10(source_all_exp.to_numpy() + 1)
-target_all_exp = np.log10(target_all_exp.to_numpy() + 1)
-
 # Gromov-Wasserstein Distance
 Cx = distance.cdist(source_all_exp, source_all_exp, metric='euclidean')
 Cy = distance.cdist(target_all_exp, target_all_exp, metric='euclidean')
+Cx = Cx / np.max(Cx)
+Cy = Cy / np.max(Cy)
 p = ot.unif(source_all_exp.shape[0])
 q = ot.unif(target_all_exp.shape[0])
 P = ot.gromov.entropic_gromov_wasserstein(Cx, Cy, p, q, 'square_loss', epsilon=epsilon)

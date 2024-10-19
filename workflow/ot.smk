@@ -42,12 +42,12 @@ rule all:
             sample=SAMPLES, merged_gwp=MERGED_GW_PARAMETERS),
         expand('output/merged_gw/{sample}/{merged_gwp}/warped.txt',
             sample=SAMPLES, merged_gwp=MERGED_GW_PARAMETERS),
-        # qGW
+        # qGW (Log)
         expand('output/qgw/{sample}/{qgwp}/plan.pkl',
             sample=SAMPLES, qgwp=QGW_PARAMETERS),
         expand('output/qgw/{sample}/{qgwp}/warped.txt',
             sample=SAMPLES, qgwp=QGW_PARAMETERS),
-        # Merged qGW
+        # Merged qGW (Log)
         expand('output/merged_qgw/{sample}/{merged_qgwp}/plan.pkl',
             sample=SAMPLES, merged_qgwp=MERGED_QGW_PARAMETERS),
         expand('output/merged_qgw/{sample}/{merged_qgwp}/warped.txt',

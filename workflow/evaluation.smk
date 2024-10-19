@@ -54,11 +54,7 @@ rule all:
         expand("output/merged_qgw/{sample}/{merged_qgwp}/cc.csv",
             sample=SAMPLES, merged_qgwp=MERGED_QGW_PARAMETERS),
         expand("output/merged_qgw/{sample}/{merged_qgwp}/jaccard.csv",
-            sample=SAMPLES, merged_qgwp=MERGED_QGW_PARAMETERS),
-        expand("output/sk/{sample}/{skp}/cc.csv",
-            sample=SAMPLES, skp=SK_PARAMETERS),
-        expand("output/sk/{sample}/{skp}/jaccard.csv",
-            sample=SAMPLES, skp=SK_PARAMETERS)
+            sample=SAMPLES, merged_qgwp=MERGED_QGW_PARAMETERS)
 
 rule evaluate_ir:
     input:
